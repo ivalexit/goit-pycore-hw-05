@@ -14,12 +14,14 @@ def input_error(func):
             return "Invalid command format. Use: add [name] [phone], change [name] [new_phone], phone [name]"
     return inner
 
+@input_error
 def add_contact(contacts: Dict[str, str], name: str, phone: str) -> str:
     if not name or not phone:
         raise ValueError
     contacts[name] = phone
     return "Contact added."
 
+@input_error
 def change_contact(contacts: Dict[str, str], name: str, new_phone: str) -> str:
     if not name or not new_phone:
         raise ValueError
@@ -28,12 +30,13 @@ def change_contact(contacts: Dict[str, str], name: str, new_phone: str) -> str:
         return "Contact updated."
     return "Contact not found."
 
+@input_error
 def show_phone(contacts: Dict[str, str], name: str) -> str:
     if not name:
         raise ValueError
     return contacts[name]
 
-
+@input_error
 def show_all(contacts: Dict[str, str]) -> str:
     if contacts:
         return "\n".join([f"{name}: {phone}" for name, phone in contacts.items()])
