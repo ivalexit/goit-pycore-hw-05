@@ -2,7 +2,7 @@ from typing import List, Dict
 import sys
 import os
 
-def parse_logs_line(line: str) -> Dict[str, str]:
+def parse_log_line(line: str) -> Dict[str, str]:
     #парсинг логу та повернення словника
     p = line.split(' ', 2)
     if len(p) >= 3:
@@ -24,7 +24,7 @@ def load_logs(file_path: str) -> List[Dict[str, str]]:
 
     with open(file_path, 'r') as file:
         for line in file:
-            p_line = parse_logs_line(line.strip())
+            p_line = parse_log_line(line.strip())
             if p_line:
                 logs.append(p_line)
     return logs
@@ -40,11 +40,11 @@ def count_logs_by_level(logs: List[Dict[str, str]]) -> Dict[str, int]:
 #Підрахунок по рівнях
     count: Dict[str, int] = {'INFO': 0, 'ERROR': 0, 'DEBUG': 0,'WARNING': 0}
     for log in logs:
-        if log in count:
-            count[log] += 1
+        if log['level'] in count:
+            count[log['level']] += 1
     return count
 
-def display_logs_counts(counts: Dict[str, int]):
+def display_log_counts(counts: Dict[str, int]):
     #Виведення записів у таблицю
     print(f"{'Рівень логування':<17} | {'Кількість':<10}")
     print('-' * 30)
@@ -58,15 +58,28 @@ def display_filtered_logs(logs: List[Dict[str, str]], level: str):
         print(f"{log['time']} - {log['message']}")
 
 def main():
-    name_file = sys.argv[1]
-    logs = load_logs(name_file)
-    print(logs)
+    if len(sys.argv) < 2:
+        print("Використання: python log_analyzer.py /path/to/logfile.log [level]")
+        sys.exit(1)
 
+    log_file_path = sys.argv[1]
+    filter_level = sys.argv[2] if len(sys.argv) > 2 else None
 
+    try:
+        logs = load_logs(log_file_path)
+    except Exception as e:
+        print(f"Помилка: {e}")
+        sys.exit(1)
 
+    counts = count_logs_by_level(logs)
+    display_log_counts(counts)
+
+    if filter_level:
+        filtered_logs = filter_logs_by_level(logs, filter_level)
+        display_filtered_logs(filtered_logs, filter_level)
 
 
 
 
 if __name__ == '__main__':
- 
+    main()
