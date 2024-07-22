@@ -83,3 +83,11 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
+
+
+
+
+# Test: cd /Users/ivalextar/Desktop/GoIT-PROJECTS/MPHomework/goit-pycore-hw-05
+# python3 task_three_logs.py log_test.log
