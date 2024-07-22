@@ -1,4 +1,5 @@
 def caching_fibonacci():
+# Ініціалізація кешу
     cache = {}
 
     def fibonacci(n):
@@ -6,8 +7,10 @@ def caching_fibonacci():
             return 0
         if n == 1:
             return 1
+# Якщо значення вже кешоване, повертаємо його
         if n in cache:
             return cache[n]
+# Обчислення (якщо немає в кеші) та збереження в кеші
         cache[n] = fibonacci(n - 1) + fibonacci(n - 2)
         return cache[n]
     return fibonacci
@@ -15,9 +18,9 @@ def caching_fibonacci():
 # Отримуємо функцію fibonacci
 fib = caching_fibonacci()
 
-# Використовуємо функцію fibonacci для обчислення чисел Фібоначчі
-print(fib(10))  # Виведе 55
-print(fib(15))  # Виведе 610
+# Використання функції для обчислення чисел Фібоначчі
+print(fib(10))  
+print(fib(15))  
 
 print(caching_fibonacci()(15))
 print(caching_fibonacci()(10))

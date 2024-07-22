@@ -2,6 +2,8 @@ from typing import List, Dict
 import sys
 import os
 
+# Декоратор для обробки помилок
+
 def input_error(func):
     def inner(*args, **kwargs):
         try:
@@ -14,12 +16,16 @@ def input_error(func):
             return "Invalid command format. Use: add [name] [phone], change [name] [new_phone], phone [name]"
     return inner
 
+# Додавання контакту з обробкою помилок
+
 @input_error
 def add_contact(contacts: Dict[str, str], name: str, phone: str) -> str:
     if not name or not phone:
         raise ValueError
     contacts[name] = phone
     return "Contact added."
+
+# Зміна контакту з обробкою помилок
 
 @input_error
 def change_contact(contacts: Dict[str, str], name: str, new_phone: str) -> str:
@@ -30,17 +36,23 @@ def change_contact(contacts: Dict[str, str], name: str, new_phone: str) -> str:
         return "Contact updated."
     return "Contact not found."
 
+# Показати номер телефону контакту з обробкою помилок
+
 @input_error
 def show_phone(contacts: Dict[str, str], name: str) -> str:
     if not name:
         raise ValueError
     return contacts[name]
 
+# Показати всі контакти з обробкою помилок
+
 @input_error
 def show_all(contacts: Dict[str, str]) -> str:
     if contacts:
         return "\n".join([f"{name}: {phone}" for name, phone in contacts.items()])
     return "No contacts found."
+
+# Парсинг вводу користувача
 
 def parse_input(user_input: str) -> (str, List[str]):
     parts = user_input.strip().split(maxsplit=2)
